@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
-import TextInput from "./TextInput";
+import { TextInput } from "./TextInput";
 import WorkForm, { experienceInitialValues } from "./WorkForm";
 import { MainSection, AboutMe } from "./Models";
 

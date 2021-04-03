@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Yup from "yup";
 import { Row, Col } from "reactstrap";
-import TextInput from "./TextInput";
+import { TextInput } from "./TextInput";
 import { PersonalInfo } from "./Models";
 
 export const userValidationSchema = Yup.object().shape({

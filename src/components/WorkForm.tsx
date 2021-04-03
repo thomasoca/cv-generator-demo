@@ -1,5 +1,5 @@
-import { Col, Row } from "reactstrap";
-import TextInput from "./TextInput";
+import { Button, ButtonGroup, Col, InputGroup, Row } from "reactstrap";
+import { TextInput, TextInputList } from "./TextInput";
 import { Work, WorkExperience } from "./Models";
 import React from "react";
 import { FieldArray } from "formik";
@@ -77,11 +77,12 @@ const WorkForm = (props: IProps) => {
                         onChange={handleChange}
                     />
                 </Col>
-                <Col xs={12} className="my-2">
+                <Col xs={12} md={6} className="my-2">
+                    <p>Job Description</p>
                     <FieldArray
                         name={namespace + ".lists[0].descriptions"}
                         render={(arrayHelpers) => (
-                            <div>
+                            <div className="my-2">
                                 {props.values.lists[0].descriptions.length >
                                     0 &&
                                     props.values.lists[0].descriptions.map(
@@ -89,48 +90,64 @@ const WorkForm = (props: IProps) => {
                                             return (
                                                 <div key={index}>
                                                     <div>
-                                                        <TextInput
-                                                            name={
-                                                                namespace +
-                                                                `.lists[0].descriptions.${index}`
-                                                            }
-                                                            type="text"
-                                                            label="Roles"
-                                                            placeholder="Your roles"
-                                                            onChange={
-                                                                handleChange
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            arrayHelpers.insert(
-                                                                index,
-                                                                ""
-                                                            );
-                                                        }}
-                                                    >
-                                                        +
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() =>
-                                                            arrayHelpers.remove(
-                                                                index
-                                                            )
-                                                        }
-                                                    >
-                                                        -
-                                                    </button>
-                                                    <pre>
-                                                        {
-                                                            props.values
+                                                        <InputGroup>
+                                                            <TextInputList
+                                                                name={
+                                                                    namespace +
+                                                                    `.lists[0].descriptions.${index}`
+                                                                }
+                                                                type="text"
+                                                                placeholder="Your roles"
+                                                                onChange={
+                                                                    handleChange
+                                                                }
+                                                            />
+                                                            {props.values
                                                                 .lists[0]
                                                                 .descriptions
-                                                                .length
-                                                        }
-                                                    </pre>
+                                                                .length > 1 &&
+                                                            props.values
+                                                                .lists[0]
+                                                                .descriptions ? (
+                                                                <div>
+                                                                    <ButtonGroup>
+                                                                        <Button
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                arrayHelpers.push(
+                                                                                    ""
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            +
+                                                                        </Button>
+                                                                        <Button
+                                                                            type="button"
+                                                                            onClick={() =>
+                                                                                arrayHelpers.remove(
+                                                                                    index
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            -
+                                                                        </Button>
+                                                                    </ButtonGroup>
+                                                                </div>
+                                                            ) : (
+                                                                <Button
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        arrayHelpers.push(
+                                                                            ""
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    +
+                                                                </Button>
+                                                            )}
+                                                        </InputGroup>
+                                                        <br />
+                                                    </div>
                                                 </div>
                                             );
                                         }

@@ -4,7 +4,7 @@ import { Label, Input } from "reactstrap";
 import { InputType } from "reactstrap/lib/Input";
 
 interface IProps {
-    label: string;
+    label?: string;
     required?: boolean;
     type: InputType;
     name: string;
@@ -13,7 +13,7 @@ interface IProps {
     id?: string;
 }
 
-export default function TextInput(props: IProps) {
+export function TextInput(props: IProps) {
     const [field, meta] = useField(props.name);
 
     return (
@@ -23,6 +23,19 @@ export default function TextInput(props: IProps) {
                 {props.required && <span className="text-danger"> *</span>}
             </Label>
             <br />
+            <Input className="text-input" {...field} {...props} />
+            {meta.touched && meta.error ? (
+                <small className="text-danger m-2">{meta.error}</small>
+            ) : null}
+        </>
+    );
+}
+
+export function TextInputList(props: IProps) {
+    const [field, meta] = useField(props.name);
+
+    return (
+        <>
             <Input className="text-input" {...field} {...props} />
             {meta.touched && meta.error ? (
                 <small className="text-danger m-2">{meta.error}</small>
