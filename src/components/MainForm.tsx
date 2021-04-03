@@ -40,6 +40,7 @@ const MainForm = () => {
                             />
                             <br />
                             <MainSectionForm
+                                values={formik.values.main_section}
                                 handleChange={formik.handleChange}
                                 namespace="main_section"
                             />

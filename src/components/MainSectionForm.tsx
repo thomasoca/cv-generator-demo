@@ -18,10 +18,11 @@ export const mainSectionInitialValues: MainSection = {
 interface IProps {
     namespace: string;
     handleChange: (e: any) => void;
+    values: MainSection;
 }
 
 const MainSectionForm = (props: IProps) => {
-    const { handleChange, namespace } = props;
+    const { handleChange, namespace, values } = props;
     return (
         <div>
             <h3 className="my-2">Personal Info</h3>
@@ -37,6 +38,7 @@ const MainSectionForm = (props: IProps) => {
                     />
                 </Col>
                 <WorkForm
+                    values={values.work_experience}
                     handleChange={handleChange}
                     namespace={namespace + ".work_experience"}
                 />

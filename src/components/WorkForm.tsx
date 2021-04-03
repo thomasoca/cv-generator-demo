@@ -1,8 +1,8 @@
 import { Col, Row } from "reactstrap";
 import TextInput from "./TextInput";
 import { Work, WorkExperience } from "./Models";
-import React, { useState } from "react";
-import { produce } from "immer";
+import React from "react";
+import { FieldArray } from "formik";
 
 const workInitialValues: Work = {
     company: "",
@@ -10,7 +10,7 @@ const workInitialValues: Work = {
     start_period: "",
     end_period: "",
     location: "",
-    descriptions: [],
+    descriptions: [""],
 };
 export const experienceInitialValues: WorkExperience = {
     label: "Experience",
@@ -20,11 +20,12 @@ export const experienceInitialValues: WorkExperience = {
 interface IProps {
     namespace: string;
     handleChange: (e: any) => void;
+    values: WorkExperience;
 }
 
 const WorkForm = (props: IProps) => {
     const { handleChange, namespace } = props;
-    const [roles, setRoles] = useState<string[]>([""]);
+
     return (
         <div>
             <h3 className="my-2">Work Experience</h3>
@@ -77,34 +78,66 @@ const WorkForm = (props: IProps) => {
                     />
                 </Col>
                 <Col xs={12} className="my-2">
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setRoles((currentRoles) => [...currentRoles, ""]);
-                        }}
-                    >
-                        Add new job description
-                    </button>
-                    {roles.map((p, index) => {
-                        return (
+                    <FieldArray
+                        name={namespace + ".lists[0].descriptions"}
+                        render={(arrayHelpers) => (
                             <div>
-                                <TextInput
-                                    type="text"
-                                    label="Job Description"
-                                    name={`.lists[0].descriptions.${index}`}
-                                    onChange={(e) => {
-                                        const newRole = e.target.value;
-                                        setRoles((currentRoles) =>
-                                            produce(currentRoles, (v) => {
-                                                v[index] = newRole;
-                                            })
-                                        );
-                                    }}
-                                    placeholder="What did you do?"
-                                />
+                                {props.values.lists[0].descriptions.length >
+                                    0 &&
+                                    props.values.lists[0].descriptions.map(
+                                        (role, index) => {
+                                            return (
+                                                <div key={index}>
+                                                    <div>
+                                                        <TextInput
+                                                            name={
+                                                                namespace +
+                                                                `.lists[0].descriptions.${index}`
+                                                            }
+                                                            type="text"
+                                                            label="Roles"
+                                                            placeholder="Your roles"
+                                                            onChange={
+                                                                handleChange
+                                                            }
+                                                        />
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            arrayHelpers.insert(
+                                                                index,
+                                                                ""
+                                                            );
+                                                        }}
+                                                    >
+                                                        +
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() =>
+                                                            arrayHelpers.remove(
+                                                                index
+                                                            )
+                                                        }
+                                                    >
+                                                        -
+                                                    </button>
+                                                    <pre>
+                                                        {
+                                                            props.values
+                                                                .lists[0]
+                                                                .descriptions
+                                                                .length
+                                                        }
+                                                    </pre>
+                                                </div>
+                                            );
+                                        }
+                                    )}
                             </div>
-                        );
-                    })}
+                        )}
+                    />
                 </Col>
             </Row>
         </div>
