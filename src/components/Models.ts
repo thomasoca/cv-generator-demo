@@ -64,7 +64,7 @@ export interface Languages {
 export interface MainSection {
     about_me: AboutMe;
     work_experience: WorkExperience;
-    // education: Education;
+    education: Education;
     // skills: Skills;
     // languages: Languages;
 }

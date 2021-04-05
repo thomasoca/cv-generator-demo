@@ -2,6 +2,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { TextInput } from "./TextInput";
 import WorkForm, { experienceInitialValues } from "./WorkForm";
+import EducationForm, { educationInitialValues } from "./EducationForm";
 import { MainSection, AboutMe } from "./Models";
 
 const aboutMeInitialValues: AboutMe = {
@@ -12,7 +13,7 @@ const aboutMeInitialValues: AboutMe = {
 export const mainSectionInitialValues: MainSection = {
     about_me: aboutMeInitialValues,
     work_experience: experienceInitialValues,
-    // address: addressInitialValues,
+    education: educationInitialValues,
 };
 
 interface IProps {
@@ -25,7 +26,7 @@ const MainSectionForm = (props: IProps) => {
     const { handleChange, namespace, values } = props;
     return (
         <div>
-            <h3 className="my-2">Personal Info</h3>
+            <h3 className="my-2">Summary</h3>
             <Row>
                 <Col xs={12} className="my-2">
                     <TextInput
@@ -37,11 +38,18 @@ const MainSectionForm = (props: IProps) => {
                         required
                     />
                 </Col>
-                <WorkForm
-                    values={values.work_experience}
-                    handleChange={handleChange}
-                    namespace={namespace + ".work_experience"}
-                />
+                <Col xs={12} className="my-2">
+                    <WorkForm
+                        values={values.work_experience}
+                        handleChange={handleChange}
+                        namespace={namespace + ".work_experience"}
+                    />
+                    <EducationForm
+                        values={values.education}
+                        handleChange={handleChange}
+                        namespace={namespace + ".education"}
+                    />
+                </Col>
             </Row>
         </div>
     );
