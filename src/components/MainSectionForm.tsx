@@ -3,6 +3,8 @@ import { Col, Row } from "reactstrap";
 import { TextInput } from "./TextInput";
 import WorkForm, { experienceInitialValues } from "./WorkForm";
 import EducationForm, { educationInitialValues } from "./EducationForm";
+import SkillsForm, { skillsInitialValues } from "./SkillsForm";
+import LanguageForm, { languagesInitialValues } from "./LanguageForm";
 import { MainSection, AboutMe } from "./Models";
 
 const aboutMeInitialValues: AboutMe = {
@@ -14,6 +16,8 @@ export const mainSectionInitialValues: MainSection = {
     about_me: aboutMeInitialValues,
     work_experience: experienceInitialValues,
     education: educationInitialValues,
+    skills: skillsInitialValues,
+    languages: languagesInitialValues,
 };
 
 interface IProps {
@@ -48,6 +52,20 @@ const MainSectionForm = (props: IProps) => {
                         values={values.education}
                         handleChange={handleChange}
                         namespace={namespace + ".education"}
+                    />
+                </Col>
+                <Col xs={12} md={6} className="my-2">
+                    <SkillsForm
+                        handleChange={handleChange}
+                        namespace={namespace + ".skills"}
+                        values={values.skills}
+                    />
+                </Col>
+                <Col xs={12} md={6} className="my-2">
+                    <LanguageForm
+                        handleChange={handleChange}
+                        namespace={namespace + ".languages"}
+                        values={values.languages}
                     />
                 </Col>
             </Row>

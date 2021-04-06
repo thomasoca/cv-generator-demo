@@ -65,8 +65,8 @@ export interface MainSection {
     about_me: AboutMe;
     work_experience: WorkExperience;
     education: Education;
-    // skills: Skills;
-    // languages: Languages;
+    skills: Skills;
+    languages: Languages;
 }
 
 export interface RootObject {
