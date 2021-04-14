@@ -22,7 +22,7 @@ export const mainSectionInitialValues: MainSection = {
 
 interface IProps {
     namespace: string;
-    handleChange: (e: any) => void;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     values: MainSection;
 }
 

@@ -12,7 +12,7 @@ const schoolInitialValues: School = {
     start_period: "",
     end_period: "",
     location: "",
-    descriptions: [""],
+    descriptions: [],
 };
 export const educationInitialValues: Education = {
     label: "Education",
@@ -21,8 +21,14 @@ export const educationInitialValues: Education = {
 
 interface IProps {
     namespace: string;
-    handleChange: (e: any) => void;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     values: Education;
+}
+
+interface DescriptionProps {
+    namespace: string;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    values: School;
 }
 
 const EducationForm = (props: IProps) => {
@@ -31,153 +37,219 @@ const EducationForm = (props: IProps) => {
     return (
         <div>
             <h3 className="my-2">Education</h3>
-            <Row>
-                <Col xs={12} className="my-2">
-                    <TextInput
-                        type="text"
-                        label="Institution name"
-                        name={namespace + ".lists[0].institution"}
-                        onChange={handleChange}
-                        placeholder="University/institute/school name"
-                        required
-                    />
-                </Col>
-                <Col xs={12} className="my-2">
-                    <TextInput
-                        type="text"
-                        label="Major"
-                        name={namespace + ".lists[0].major"}
-                        onChange={handleChange}
-                        placeholder="Your major/specialization"
-                        required
-                    />
-                </Col>
-                <Col xs={12} md={6} className="my-2">
-                    <TextInput
-                        type="text"
-                        name={namespace + ".lists[0].level"}
-                        label="Degree"
-                        placeholder="Degree obtained"
-                        onChange={handleChange}
-                    />
-                </Col>
-                <Col xs={12} md={6} className="my-2">
-                    <TextInput
-                        type="text"
-                        name={namespace + ".lists[0].gpa"}
-                        label="GPA"
-                        placeholder="GPA/score"
-                        onChange={handleChange}
-                    />
-                </Col>
-                <Col xs={12} className="my-2">
-                    <TextInput
-                        type="text"
-                        label="Location"
-                        name={namespace + ".lists[0].location"}
-                        onChange={handleChange}
-                        placeholder="University/institute/school location"
-                    />
-                </Col>
-                <Col xs={12} md={6} className="my-2">
-                    <TextInput
-                        type="date"
-                        name={namespace + ".lists[0].start_period"}
-                        label="Start Date"
-                        placeholder="Start Date"
-                        onChange={handleChange}
-                    />
-                </Col>
-                <Col xs={12} md={6} className="my-2">
-                    <TextInput
-                        type="date"
-                        name={namespace + ".lists[0].end_period"}
-                        label="End Date"
-                        placeholder="End Date"
-                        onChange={handleChange}
-                    />
-                </Col>
-                <Col xs={12} md={6} className="my-2">
-                    <p>Additional Notes</p>
-                    <FieldArray
-                        name={namespace + ".lists[0].descriptions"}
-                        render={(arrayHelpers) => (
-                            <div className="my-2">
-                                {props.values.lists[0].descriptions.length >
-                                    0 &&
-                                    props.values.lists[0].descriptions.map(
-                                        (role, index) => {
-                                            return (
-                                                <div key={index}>
-                                                    <div>
-                                                        <InputGroup>
-                                                            <TextInputList
-                                                                name={
-                                                                    namespace +
-                                                                    `.lists[0].descriptions.${index}`
-                                                                }
-                                                                type="text"
-                                                                placeholder="Tell more about your education"
-                                                                onChange={
-                                                                    handleChange
-                                                                }
-                                                            />
-                                                            {props.values
-                                                                .lists[0]
-                                                                .descriptions
-                                                                .length > 1 &&
-                                                            props.values
-                                                                .lists[0]
-                                                                .descriptions ? (
-                                                                <div>
-                                                                    <ButtonGroup>
-                                                                        <Button
-                                                                            type="button"
-                                                                            onClick={() => {
-                                                                                arrayHelpers.push(
-                                                                                    ""
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            +
-                                                                        </Button>
-                                                                        <Button
-                                                                            type="button"
-                                                                            onClick={() =>
-                                                                                arrayHelpers.remove(
-                                                                                    index
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            -
-                                                                        </Button>
-                                                                    </ButtonGroup>
-                                                                </div>
-                                                            ) : (
-                                                                <Button
-                                                                    type="button"
-                                                                    onClick={() => {
-                                                                        arrayHelpers.push(
-                                                                            ""
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    +
-                                                                </Button>
-                                                            )}
-                                                        </InputGroup>
-                                                        <br />
-                                                    </div>
-                                                </div>
+            <FieldArray
+                name={namespace + ".lists"}
+                render={(arrayHelpers) =>
+                    props.values.lists.map((works, index) => {
+                        return (
+                            <div key={index}>
+                                {props.values.lists.length > 1 &&
+                                props.values.lists ? (
+                                    <div>
+                                        <ButtonGroup>
+                                            <Button
+                                                type="button"
+                                                onClick={() => {
+                                                    arrayHelpers.push(
+                                                        schoolInitialValues
+                                                    );
+                                                }}
+                                            >
+                                                Add more education
+                                            </Button>
+                                            &nbsp;
+                                            <Button
+                                                type="button"
+                                                onClick={() =>
+                                                    arrayHelpers.remove(index)
+                                                }
+                                            >
+                                                Remove this education
+                                            </Button>
+                                        </ButtonGroup>
+                                    </div>
+                                ) : (
+                                    <Button
+                                        type="button"
+                                        onClick={() => {
+                                            arrayHelpers.push(
+                                                schoolInitialValues
                                             );
-                                        }
-                                    )}
+                                        }}
+                                    >
+                                        Add more education
+                                    </Button>
+                                )}
+                                <Row>
+                                    <Col xs={12} className="my-2">
+                                        <TextInput
+                                            type="text"
+                                            label="Institution name"
+                                            name={
+                                                namespace +
+                                                `.lists.${index}.institution`
+                                            }
+                                            onChange={handleChange}
+                                            placeholder="University/institute/school name"
+                                            required
+                                        />
+                                    </Col>
+                                    <Col xs={12} className="my-2">
+                                        <TextInput
+                                            type="text"
+                                            label="Major"
+                                            name={
+                                                namespace +
+                                                `.lists.${index}.major`
+                                            }
+                                            onChange={handleChange}
+                                            placeholder="Your major/specialization"
+                                            required
+                                        />
+                                    </Col>
+                                    <Col xs={12} md={6} className="my-2">
+                                        <TextInput
+                                            type="text"
+                                            name={
+                                                namespace +
+                                                `.lists.${index}.level`
+                                            }
+                                            label="Degree"
+                                            placeholder="Degree obtained"
+                                            onChange={handleChange}
+                                        />
+                                    </Col>
+                                    <Col xs={12} md={6} className="my-2">
+                                        <TextInput
+                                            type="text"
+                                            name={
+                                                namespace +
+                                                `.lists.${index}.gpa`
+                                            }
+                                            label="GPA"
+                                            placeholder="GPA/score"
+                                            onChange={handleChange}
+                                        />
+                                    </Col>
+                                    <Col xs={12} className="my-2">
+                                        <TextInput
+                                            type="text"
+                                            label="Location"
+                                            name={
+                                                namespace +
+                                                `.lists.${index}.location`
+                                            }
+                                            onChange={handleChange}
+                                            placeholder="University/institute/school location"
+                                        />
+                                    </Col>
+                                    <Col xs={12} md={6} className="my-2">
+                                        <TextInput
+                                            type="date"
+                                            name={
+                                                namespace +
+                                                `.lists.${index}.start_period`
+                                            }
+                                            label="Start Date"
+                                            placeholder="Start Date"
+                                            onChange={handleChange}
+                                        />
+                                    </Col>
+                                    <Col xs={12} md={6} className="my-2">
+                                        <TextInput
+                                            type="date"
+                                            name={
+                                                namespace +
+                                                `.lists.${index}.end_period`
+                                            }
+                                            label="End Date"
+                                            placeholder="End Date"
+                                            onChange={handleChange}
+                                        />
+                                    </Col>
+                                    <Col xs={12} md={6} className="my-2">
+                                        <p>Additional Notes</p>
+                                        <DescriptionForm
+                                            namespace={
+                                                namespace + `.lists.${index}`
+                                            }
+                                            handleChange={handleChange}
+                                            values={props.values.lists[index]}
+                                        />
+                                    </Col>
+                                </Row>
                             </div>
-                        )}
-                    />
-                </Col>
-            </Row>
+                        );
+                    })
+                }
+            />
         </div>
+    );
+};
+
+const DescriptionForm = (props: DescriptionProps) => {
+    const { handleChange, namespace } = props;
+    return (
+        <FieldArray
+            name={namespace + ".descriptions"}
+            render={(arrayHelpers) => (
+                <div className="my-2">
+                    {props.values.descriptions.length > 0 ? (
+                        props.values.descriptions.map((role, index) => {
+                            return (
+                                <div key={index}>
+                                    <div>
+                                        <InputGroup>
+                                            <TextInputList
+                                                name={
+                                                    namespace +
+                                                    `.descriptions.${index}`
+                                                }
+                                                type="text"
+                                                placeholder="Tell more about your education"
+                                                onChange={handleChange}
+                                            />
+                                            <div>
+                                                <ButtonGroup>
+                                                    <Button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            arrayHelpers.push(
+                                                                ""
+                                                            );
+                                                        }}
+                                                    >
+                                                        +
+                                                    </Button>
+                                                    <Button
+                                                        type="button"
+                                                        onClick={() =>
+                                                            arrayHelpers.remove(
+                                                                index
+                                                            )
+                                                        }
+                                                    >
+                                                        -
+                                                    </Button>
+                                                </ButtonGroup>
+                                            </div>
+                                        </InputGroup>
+                                        <br />
+                                    </div>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <Button
+                            type="button"
+                            onClick={() => arrayHelpers.push("")}
+                        >
+                            Add more descriptions
+                        </Button>
+                    )}
+                </div>
+            )}
+        />
     );
 };
 
