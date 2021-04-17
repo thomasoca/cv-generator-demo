@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Yup from "yup";
-import { Row, Col } from "reactstrap";
-import { TextInput } from "./TextInput";
+import { Row, Col, Input, FormGroup, Label } from "reactstrap";
+import { TextInput, TextInputList } from "./TextInput";
 import { PersonalInfo } from "./Models";
 
 export const userValidationSchema = Yup.object().shape({
@@ -11,7 +11,8 @@ export const userValidationSchema = Yup.object().shape({
 
 interface UserProps {
     namespace: string;
-    handleChange: (e: any) => void;
+    setFieldValue: (field: string, value: any) => void;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const userInitialValues: PersonalInfo = {
@@ -27,8 +28,27 @@ export const userInitialValues: PersonalInfo = {
     location_2: "",
 };
 
+const getBase64 = (file: File) => {
+    return new Promise<string>((resolve) => {
+        let baseURL: string = "";
+        // Make new FileReader
+        let reader = new FileReader();
+
+        // Convert the file to base64 text
+        reader.readAsDataURL(file);
+
+        // on reader load somthing...
+        reader.onload = () => {
+            // Make a fileInfo Object
+            baseURL = reader.result as string;
+            resolve(baseURL);
+        };
+    });
+};
+
 const UserForm = (props: UserProps) => {
-    const { handleChange, namespace } = props;
+    const { handleChange, namespace, setFieldValue } = props;
+    const [uploadType, setUploadType] = React.useState("local");
     return (
         <div>
             <h3 className="my-2">Personal Info</h3>
@@ -88,7 +108,7 @@ const UserForm = (props: UserProps) => {
                         onChange={handleChange}
                     />
                 </Col>
-                <Col xs={12} md={6} className="my-2">
+                <Col xs={12} md={4} className="my-2">
                     <TextInput
                         type="text"
                         name={namespace + ".twitter"}
@@ -97,7 +117,7 @@ const UserForm = (props: UserProps) => {
                         onChange={handleChange}
                     />
                 </Col>
-                <Col xs={12} md={6} className="my-2">
+                <Col xs={12} md={4} className="my-2">
                     <TextInput
                         type="text"
                         label="LinkedIn"
@@ -106,7 +126,7 @@ const UserForm = (props: UserProps) => {
                         placeholder="Your LinkedIn Profile Name"
                     />
                 </Col>
-                <Col xs={12} md={6} className="my-2">
+                <Col xs={12} md={4} className="my-2">
                     <TextInput
                         type="text"
                         name={namespace + ".github"}
@@ -116,13 +136,70 @@ const UserForm = (props: UserProps) => {
                     />
                 </Col>
                 <Col xs={12} md={6} className="my-2">
-                    <TextInput
-                        type="text"
-                        name={namespace + ".picture"}
-                        label="Profile Picture"
-                        placeholder="Fill with your picture URL"
-                        onChange={handleChange}
-                    />
+                    <p>Profile Picture</p>
+                    <FormGroup check>
+                        <Label check>
+                            <Input
+                                defaultChecked
+                                type="radio"
+                                name="profpicselector"
+                                value="local"
+                                onClick={() => {
+                                    setUploadType("local");
+                                    setFieldValue(
+                                        namespace + ".picture",
+                                        userInitialValues.picture
+                                    );
+                                }}
+                            />
+                            Upload from local folder
+                        </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                        <Label check>
+                            <Input
+                                type="radio"
+                                name="profpicselector"
+                                value="publicurl"
+                                onClick={() => {
+                                    setUploadType("publicurl");
+                                    setFieldValue(
+                                        namespace + ".picture",
+                                        userInitialValues.picture
+                                    );
+                                }}
+                            />
+                            Upload using public URL
+                        </Label>
+                    </FormGroup>
+                    <br />
+                    {uploadType === "local" ? (
+                        <Input
+                            type="file"
+                            name={namespace + ".picture"}
+                            id="exampleFile"
+                            onChange={(e) => {
+                                let file = e?.target.files?.item(0)!;
+                                getBase64(file)
+                                    .then((result) => {
+                                        setFieldValue(
+                                            namespace + ".picture",
+                                            result
+                                        );
+                                    })
+                                    .catch((err) => {
+                                        console.log(err);
+                                    });
+                            }}
+                        />
+                    ) : (
+                        <TextInputList
+                            type="text"
+                            name={namespace + ".picture"}
+                            placeholder="Fill with your picture URL"
+                            onChange={handleChange}
+                        />
+                    )}
                 </Col>
             </Row>
         </div>

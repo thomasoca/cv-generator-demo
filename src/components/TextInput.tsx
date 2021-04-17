@@ -9,7 +9,7 @@ interface IProps {
     type: InputType;
     name: string;
     placeholder?: string;
-    onChange: (e: any) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     id?: string;
 }
 
