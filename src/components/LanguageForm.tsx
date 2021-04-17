@@ -48,6 +48,7 @@ const LanguageForm = (props: IProps) => {
                                                                 onChange={
                                                                     handleChange
                                                                 }
+                                                                required
                                                             />
                                                             <Input
                                                                 type="select"

@@ -44,6 +44,7 @@ const SkillsForm = (props: IProps) => {
                                                                 onChange={
                                                                     handleChange
                                                                 }
+                                                                required
                                                             />
                                                             {props.values
                                                                 .descriptions
