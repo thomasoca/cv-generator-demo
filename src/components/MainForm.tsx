@@ -5,6 +5,7 @@ import * as Yup from "yup";
 
 import UserForm, { userValidationSchema, userInitialValues } from "./UserForm";
 import MainSectionForm, { mainSectionInitialValues } from "./MainSectionForm";
+import axios, { AxiosError } from "axios";
 
 const validationSchema = Yup.object({
     personal_info: userValidationSchema,
@@ -14,7 +15,6 @@ const validationSchema = Yup.object({
 const initialValues = {
     personal_info: userInitialValues,
     main_section: mainSectionInitialValues,
-    // address: addressInitialValues,
 };
 
 const MainForm = () => {
@@ -23,8 +23,40 @@ const MainForm = () => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={(values, { setSubmitting }) => {
-                console.log(JSON.stringify(values));
-                setSubmitting(false);
+                values.main_section.languages.descriptions.forEach(function (
+                    part,
+                    index,
+                    langArray
+                ) {
+                    langArray[index].fluency = parseInt(
+                        langArray[index].fluency.toString()
+                    );
+                },
+                values.main_section.languages.descriptions); // use arr as this
+                setSubmitting(true);
+                axios({
+                    url: "http://localhost:8080/user",
+                    method: "POST",
+                    responseType: "blob", // important
+                    data: values,
+                })
+                    .then((response) => {
+                        const url = window.URL.createObjectURL(
+                            new Blob([response.data])
+                        );
+                        const link = document.createElement("a");
+                        link.href = url;
+                        link.setAttribute("download", "file.pdf");
+                        document.body.appendChild(link);
+                        link.click();
+                        setSubmitting(false);
+                    })
+                    .catch((err: AxiosError): void => {
+                        setSubmitting(false);
+                        alert(
+                            JSON.stringify(err.response?.statusText, null, 2)
+                        );
+                    });
             }}
         >
             {(formik) => {
@@ -37,6 +69,7 @@ const MainForm = () => {
                             <UserForm
                                 handleChange={formik.handleChange}
                                 namespace="personal_info"
+                                setFieldValue={formik.setFieldValue}
                             />
                             <br />
                             <MainSectionForm
@@ -50,6 +83,7 @@ const MainForm = () => {
                                     <input
                                         className="my-4 btn btn-primary btn-block"
                                         type="submit"
+                                        disabled={formik.isSubmitting}
                                         value="Submit"
                                     />
                                 </Col>
