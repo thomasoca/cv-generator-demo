@@ -1,6 +1,14 @@
-import * as React from "react";
+import React, { useCallback, useState } from "react";
 import * as Yup from "yup";
-import { Row, Col, Input, FormGroup, Label } from "reactstrap";
+import {
+    Row,
+    Col,
+    Input,
+    FormGroup,
+    Label,
+    Button,
+    InputGroup,
+} from "reactstrap";
 import { TextInput, TextInputList } from "./TextInput";
 import { PersonalInfo } from "./Models";
 
@@ -13,6 +21,7 @@ interface UserProps {
     namespace: string;
     setFieldValue: (field: string, value: any) => void;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    values: { [field: string]: any };
 }
 
 export const userInitialValues: PersonalInfo = {
@@ -47,8 +56,14 @@ const getBase64 = (file: File) => {
 };
 
 const UserForm = (props: UserProps) => {
-    const { handleChange, namespace, setFieldValue } = props;
-    const [uploadType, setUploadType] = React.useState("local");
+    const placeholderImg: string = "./preview.jpg";
+    const errorImg: string = "./error.jpg";
+    const { handleChange, namespace, setFieldValue, values } = props;
+    const [uploadType, setUploadType] = useState("local");
+    const [imageSrc, setImageSrc] = useState(placeholderImg);
+    const errorHandler = useCallback(() => {
+        setImageSrc(errorImg || placeholderImg);
+    }, [errorImg, placeholderImg]);
     return (
         <div>
             <h3 className="my-2">Personal Info</h3>
@@ -137,6 +152,14 @@ const UserForm = (props: UserProps) => {
                 </Col>
                 <Col xs={12} md={6} className="my-2">
                     <p>Profile Picture</p>
+                    <img
+                        onError={errorHandler}
+                        src={imageSrc}
+                        alt="preview"
+                        width="200"
+                        height="200"
+                    />
+                    <br />
                     <FormGroup check>
                         <Label check>
                             <Input
@@ -145,6 +168,7 @@ const UserForm = (props: UserProps) => {
                                 name="profpicselector"
                                 value="local"
                                 onClick={() => {
+                                    setImageSrc(placeholderImg);
                                     setUploadType("local");
                                     setFieldValue(
                                         namespace + ".picture",
@@ -162,6 +186,7 @@ const UserForm = (props: UserProps) => {
                                 name="profpicselector"
                                 value="publicurl"
                                 onClick={() => {
+                                    setImageSrc(placeholderImg);
                                     setUploadType("publicurl");
                                     setFieldValue(
                                         namespace + ".picture",
@@ -176,6 +201,7 @@ const UserForm = (props: UserProps) => {
                     {uploadType === "local" ? (
                         <Input
                             type="file"
+                            accept=".jpg, .jpeg, .png"
                             name={namespace + ".picture"}
                             id="exampleFile"
                             onChange={(e) => {
@@ -186,6 +212,7 @@ const UserForm = (props: UserProps) => {
                                             namespace + ".picture",
                                             result
                                         );
+                                        setImageSrc(result);
                                     })
                                     .catch((err) => {
                                         console.log(err);
@@ -193,12 +220,27 @@ const UserForm = (props: UserProps) => {
                             }}
                         />
                     ) : (
-                        <TextInputList
-                            type="text"
-                            name={namespace + ".picture"}
-                            placeholder="Fill with your picture URL"
-                            onChange={handleChange}
-                        />
+                        <div>
+                            <InputGroup>
+                                <TextInputList
+                                    type="text"
+                                    name={namespace + ".picture"}
+                                    placeholder="Fill with your picture URL"
+                                    onChange={handleChange}
+                                />
+                                &nbsp;
+                                <Button
+                                    type="button"
+                                    onClick={() => {
+                                        setImageSrc(
+                                            values[namespace]["picture"]
+                                        );
+                                    }}
+                                >
+                                    Preview URL
+                                </Button>
+                            </InputGroup>
+                        </div>
                     )}
                 </Col>
             </Row>

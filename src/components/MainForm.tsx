@@ -35,7 +35,7 @@ const MainForm = () => {
                 values.main_section.languages.descriptions); // use arr as this
                 setSubmitting(true);
                 axios({
-                    url: "http://localhost:8080/user",
+                    url: process.env.API_URL,
                     method: "POST",
                     responseType: "blob", // important
                     data: values,
@@ -70,6 +70,7 @@ const MainForm = () => {
                                 handleChange={formik.handleChange}
                                 namespace="personal_info"
                                 setFieldValue={formik.setFieldValue}
+                                values={formik.values}
                             />
                             <br />
                             <MainSectionForm
