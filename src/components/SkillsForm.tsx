@@ -19,7 +19,9 @@ const SkillsForm = (props: IProps) => {
     const { handleChange, namespace } = props;
     return (
         <div>
-            <h3 className="my-2">Skills</h3>
+            <h3 className="my-2">
+                Skills <span className="text-danger"> *</span>
+            </h3>
             <Row>
                 <Col xs={12} className="my-2">
                     {/* <p>Additional Notes</p> */}

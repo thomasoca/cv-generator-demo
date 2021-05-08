@@ -23,7 +23,10 @@ const LanguageForm = (props: IProps) => {
     const { handleChange, namespace } = props;
     return (
         <div>
-            <h3 className="my-2">Language Skills (Fluency level)</h3>
+            <h3 className="my-2">
+                Language Skills (Fluency level)
+                <span className="text-danger"> *</span>
+            </h3>
             <Row>
                 <Col xs={12} className="my-2">
                     {/* <p>Additional Notes</p> */}
