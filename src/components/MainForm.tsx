@@ -35,7 +35,7 @@ const MainForm = () => {
                 values.main_section.languages.descriptions); // use arr as this
                 setSubmitting(true);
                 axios({
-                    url: process.env.API_URL,
+                    url: process.env.REACT_APP_API_URL,
                     method: "POST",
                     responseType: "blob", // important
                     data: values,
