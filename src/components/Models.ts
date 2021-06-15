@@ -25,9 +25,36 @@ export interface Work {
     descriptions: string[];
 }
 
+export interface ExtraCurricular {
+    institution: string;
+    position: string;
+    start_period: string;
+    end_period: string;
+    location: string;
+    descriptions: string[];
+}
+
+export interface Project {
+    title: string;
+    link: string;
+    start_period: string;
+    end_period: string;
+    descriptions: string;
+}
+
 export interface WorkExperience {
     label: string;
     lists: Work[];
+}
+
+export interface ExtraCurricularExperience {
+    label: string;
+    lists: ExtraCurricular[];
+}
+
+export interface Projects {
+    label: string;
+    lists: Project[];
 }
 
 export interface School {
@@ -67,6 +94,8 @@ export interface MainSection {
     education: Education;
     skills: Skills;
     languages: Languages;
+    extracurricular: ExtraCurricularExperience;
+    projects: Projects;
 }
 
 export interface RootObject {

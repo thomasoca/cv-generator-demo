@@ -6,6 +6,10 @@ import EducationForm, { educationInitialValues } from "./EducationForm";
 import SkillsForm, { skillsInitialValues } from "./SkillsForm";
 import LanguageForm, { languagesInitialValues } from "./LanguageForm";
 import { MainSection, AboutMe } from "./Models";
+import ExtraCurricularForm, {
+    extraExpInitialValues,
+} from "./ExtraCurricularForm";
+import ProjectForm, { projetcsInitialValues } from "./ProjectForm";
 
 const aboutMeInitialValues: AboutMe = {
     label: "About Me",
@@ -18,6 +22,8 @@ export const mainSectionInitialValues: MainSection = {
     education: educationInitialValues,
     skills: skillsInitialValues,
     languages: languagesInitialValues,
+    extracurricular: extraExpInitialValues,
+    projects: projetcsInitialValues,
 };
 
 interface IProps {
@@ -52,6 +58,18 @@ const MainSectionForm = (props: IProps) => {
                         values={values.education}
                         handleChange={handleChange}
                         namespace={namespace + ".education"}
+                    />
+                </Col>
+                <Col xs={12} className="my-2">
+                    <ExtraCurricularForm
+                        values={values.extracurricular}
+                        handleChange={handleChange}
+                        namespace={namespace + ".extracurricular"}
+                    />
+                    <ProjectForm
+                        values={values.projects}
+                        handleChange={handleChange}
+                        namespace={namespace + ".projects"}
                     />
                 </Col>
                 <Col xs={12} md={6} className="my-2">
