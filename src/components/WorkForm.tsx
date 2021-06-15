@@ -89,7 +89,6 @@ const WorkForm = (props: IProps) => {
                                             }
                                             onChange={handleChange}
                                             placeholder="Company/organization name"
-                                            required
                                         />
                                     </Col>
                                     <Col xs={12} className="my-2">
@@ -102,7 +101,6 @@ const WorkForm = (props: IProps) => {
                                             }
                                             onChange={handleChange}
                                             placeholder="Your role in company/organization"
-                                            required
                                         />
                                     </Col>
                                     <Col xs={12} className="my-2">
