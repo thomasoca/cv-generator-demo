@@ -117,6 +117,7 @@ const EducationForm = (props: IProps) => {
                                             label="Degree"
                                             placeholder="Degree obtained"
                                             onChange={handleChange}
+                                            required
                                         />
                                     </Col>
                                     <Col xs={12} md={6} className="my-2">
